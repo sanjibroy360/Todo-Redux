@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>TODO:Redux</title>
+    <link rel="stylesheet" href="./assets/stylesheets/style.css" />
+    <script
+      defer
+      src="https://unpkg.com/redux@3.7.1/dist/redux.min.js"
+    ></script>
+    <script defer src="./assets/scripts/main.js"></script>
+
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"
+    ></script>
+  </head>
+  <!-- onload="displayAll(database)" -->
+  <body>
+    <main>
+      <section>
+        <div class="todo_wrapper">
+          <header class="input_sec">
+            <span class="down_arrow_wrapper"
+              ><i class="fas fa-chevron-down down_arrow"></i>
+            </span>
+            <h1 class="heading">todos</h1>
+            <input
+              type="text"
+              placeholder="What needs to be done?"
+              class="todo_input"
+            />
+          </header>
+
+          <ul class="todo_list"></ul>
+          <!-- <li class="flex list_item"> -->
+          <!-- <input type="checkbox" id="toggle" class="check" /> -->
+          <!-- <label for="toggle" class="check">
+                        <div class="tick_wrapper">
+                            <img src="./assets/media/tick.png" alt="" class="tick_mark" width="15px" height="15px">
+                        </div>
+
+                    </label>
+                    <label for="toggle" class="completed check"></label>
+                    <input type="text" class="todo_show">
+
+                    <span class="delete">
+                        X
+                    </span> -->
+          <!-- </li> -->
+
+          <footer>
+            <div class="footer footer_flex2">
+              <span class="item_left"></span>
+              <ul class="footer_list footer_flex">
+                <li class="all selected">All</li>
+                <li class="active">Active</li>
+                <li class="completed">Completed</li>
+              </ul>
+              <span class="clear_completed">Clear completed</span>
+            </div>
+          </footer>
+        </div>
+      </section>
+
+      <section class="desc">
+        <p>Double-click to edit a todo</p>
+        <p>
+          Created by <a href="https://github.com/sanjibroy360">Sanjib Roy</a>
+        </p>
+        <p>Part of <a href="https://altcampus.io/">AltCampus</a></p>
+      </section>
+    </main>
+    <script
+      src="https://kit.fontawesome.com/56c102e6b2.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

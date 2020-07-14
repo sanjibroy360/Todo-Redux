@@ -1,0 +1,376 @@
+/* CSS Reset */
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* My Reset */
+
+html, body {
+    font : 16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #f5f5f5;
+}
+
+*::before, *::after {
+    box-sizing: border-box;
+}
+
+input, button,i {
+    outline: 0;
+    border: 0;
+}
+/* Main Todo wrapper */
+
+.todo_wrapper {
+    text-align: center;
+    width: 34.375rem;
+    margin: 0 auto;
+    padding: 1rem 1rem 1rem 3.75rem;
+}
+
+/* Heading */
+
+
+.heading {
+    font-size: 6.25rem;
+    color: rgba(175, 47, 47, 0.15);
+    width: 100%;
+}
+
+.input_sec {
+    border:  #4d4d4d;
+}
+
+.todo_input {
+    padding: 1rem 1rem 1rem 3.75rem;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+    box-shadow: inset 0 -0.125rem 0.0625rem rgba(0,0,0,0.03);
+
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: rgb(77,77,77);
+    width: 34.75rem;
+    box-sizing: border-box;
+    background-color: #fff;
+    
+    /* box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2); */
+    
+    /* border: 1px solid #999; */
+    
+}
+
+
+.todo_input::placeholder {
+    color: rgba(232,232,232,0.8);
+    font-style: italic;
+    
+}
+
+
+.edited_input {
+    
+    flex-basis: 85.4546%;
+    /* color: red; */
+    border: 0;
+    line-height: 1.2;
+    font-weight: 300;
+    padding: 0.9375rem 0.9375rem 0.9375rem 3.75rem;
+    text-align: left;
+}
+
+.input_sec {
+    position: relative;
+}
+.down_arrow {
+    font-size: 1.75rem;
+    position: absolute;
+    top: 72%;
+    left: 3%;
+    opacity: 0.2;
+    visibility: hidden;
+}
+
+.edit {
+    border: 1px solid #999;
+    padding: 13px 16px 13px 20px;
+}
+
+
+/* Todo Items */
+
+.todo_list {
+    width: 100%;
+    
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    width: 100%;
+}
+
+.check {
+    flex-basis: 7.2727%;
+    margin: 0.5625rem 0;
+}
+
+.todo_show {
+    flex-basis: 85.4546%;
+    font-size: 1.5rem;
+    color:#4d4d4d;
+    border: 0;
+    line-height: 1.2;
+    font-weight: 300;
+    padding: 0.9375rem 0.9375rem 0.9375rem 1.25rem;
+    text-align: left;
+    
+}
+
+.list_item {
+    /* position: relative; */
+    /* z-index: 2; */
+    background-color: #fff;
+    width: 34.75rem;
+    border-top: 1px solid #e6e6e6;
+    cursor: default;
+}
+
+/* .list_item:hover {
+    
+} */
+
+
+.delete {
+    flex-basis: 7.2727%;
+    position: relative;
+    top: 0;
+    right: 0.5rem;
+    bottom: 0;
+    font-size: 1.5rem;
+    color: #cc9a9a;
+    background: transparent;
+    margin: 7px 0 11px 0;
+    z-index: -1;
+    padding: 0.25rem;
+    cursor: default;
+}
+
+
+
+
+/* .label {
+    background: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23ededed%22%20stroke-width%3D%223%22/%3E%3C/svg%3E');
+
+    background-repeat: no-repeat;
+    background-position: center left;
+    position: relative;
+    z-index: 8;
+}
+#toggle:checked ~ label{
+    color: red;
+} */
+/* Footer */
+
+
+.footer {
+    height: 3.125rem;
+    padding: 0.625rem 0.9375rem;
+    font-size: 0.875rem;
+    width: 34.75rem;
+    background-color: #fff;
+    box-sizing: border-box;
+    
+    color: #777;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),
+                0 8px 0 -3px #f6f6f6, 
+                0 9px 1px -3px rgba(0, 0, 0, 0.2), 
+                0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid #e6e6e6;
+    visibility: hidden;
+}
+.footer_flex2 { 
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.footer_flex { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.item_left {
+    flex-basis: 20%;
+    text-align: left;
+    cursor: default;
+    
+}
+.clear_completed {
+    flex-basis: 25%;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.clear_completed:hover {
+    text-decoration: underline;
+}
+
+.footer_list {
+    flex-basis: 55%;
+    text-align: center;
+}
+
+.all, .active, .completed {
+    margin: 0.1875rem;
+    padding: 0.1875rem 0.4375rem ;
+    opacity: 1;
+    border: 0;
+    background-color: #fff;
+    box-sizing: border-box;
+    display: block;
+    cursor: pointer;
+    color: #777;
+    /* margin-left: 1rem; */
+    
+}
+
+.strike {
+    text-decoration: line-through;
+    color: #d9d9d9;
+    transition: color 0.4s;
+}
+
+.selected {
+    border: 1px solid rgba(175, 47, 47, 0.2);
+    border-radius: 0.1875rem;
+}
+
+.visible {
+    visibility: visible;
+}
+
+
+
+.tick_mark {
+    width: 15px;
+    height: 15px;
+
+    box-sizing: border-box;
+    vertical-align: middle;
+    margin: 0 auto;
+    margin-bottom: 2px;
+    position: relative;
+    right: 2%;
+    /* visibility: hidden; */
+    /* display: none;   */
+  
+    /* margin-left: 15px; */
+    /* background: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23ededed%22%20stroke-width%3D%223%22/%3E%3C/svg%3E'); */
+
+}
+
+
+
+
+
+.tick_wrapper {
+    margin: 0 auto;
+    margin-left: 12px;
+    /* position: relative; */
+    /* bottom: 15px; */
+    
+    width: 34.5px;
+    height: 34.5px;
+    border: 1px solid rgb(212,231,227);
+    border-radius: 50%;
+    padding: 8px 6px; 
+    box-sizing: border-box;
+    opacity: 0.8;
+    
+
+}
+
+
+#toggle {
+    display: none;
+}
+
+.desc p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px
+}
+
+.desc {
+    margin: 65px auto 0;
+    color: #bfbfbf;
+    font-size: 10px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-align: center;       
+}
+
+.desc a {
+    
+    color: #bfbfbf;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.desc a:hover {
+    text-decoration-line: underline;
+}
+
+
