@@ -1,155 +1,209 @@
 var input = document.querySelector(".todo_input");
 let ul = document.querySelector(".todo_list");
 let downArrowBtn = document.querySelector(".down_arrow");
-var todos = [];
-
 var allBtn = document.querySelector(".all");
 var activeBtn = document.querySelector(".active");
 var completedBtn = document.querySelector(".completed");
 
-function todoReducer(todos = [], action) {
-  //   action.type = action.type.toUpperCase();
+// Initial state
 
+var initialState = {
+  allTodos: [],
+  activeTab: "ALL_TODO",
+};
+
+// Reducers
+
+function allTodoReducer(state = initialState.allTodos, action) {
   switch (action.type) {
     case "ADD":
       return [
-        ...todos,
+        ...state,
         {
           id: uuidv4(),
-          task: action.task,
+          text: action.payload,
           isDone: false,
         },
       ];
-    case "COMPLETED":
-      return (arr = todos.reduce((acc, cv) => {
-        if (cv.id === action.id) {
+
+    case "TOGGLE_TODO":
+      return state.reduce((acc, cv) => {
+        if (cv.id === action.payload) {
           cv.isDone = !cv.isDone;
         }
         acc.push(cv);
         return acc;
-      }, []));
+      }, []);
 
     case "COMPLETE_ALL":
-      var noOfCompletedTask = todos.filter((task) => task.isDone).length;
-      var length = todos.length;
+      var noOfCompletedTask = state.filter((task) => task.isDone).length;
+      var length = state.length;
 
       if (noOfCompletedTask < length) {
-        console.log("<length");
-
-        return todos.reduce((acc, task) => {
+        return state.map((task) => {
           if (!task.isDone) {
             task.isDone = true;
           }
-
-          acc.push(task);
-          return acc;
-        }, []);
+          return task;
+        });
       } else {
-        console.log("===");
-        return todos.map((task) => {
+        return state.map((task) => {
           task.isDone = false;
           return task;
         });
       }
 
-    case "DELETE":
-      return todos.filter((task) => task.id !== action.id);
+    case "DELETE_TODO":
+      return state.filter((task) => task.id !== action.payload);
 
-    case "ALL_COMPLETED_TASK":
-      return todos.filter((task) => task.isDone);
+    case "UPDATE_TODO":
+      var index = state.findIndex((task) => task.id === action.id);
+      state[index].task = action.task;
+      return state;
 
-    case "ALL_ACTIVE_TASK":
+    case "CLEAR_COMPLETED":
+      return state.filter((task) => !task.isDone);
+
+    default:
+      return state;
+  }
+}
+
+function activeTabReducer(state = initialState.activeTab, action) {
+  console.log(action.payload);
+  switch (action.type) {
+    case "CHANGE_TAB":
+      return action.payload;
+
+    default:
+      return state;
+  }
+}
+
+// Actions
+
+var TodoInputAction = (payload) => {
+  return {
+    type: "ADD",
+    payload,
+  };
+};
+
+var ClearCompletedAction = (payload) => {
+  return store.dispatch({
+    type: payload,
+  });
+};
+
+var ToggleTodoAction = (payload) => {
+  return {
+    type: "TOGGLE_TODO",
+    payload,
+  };
+};
+
+var DeleteTodoAction = (payload) => {
+  return {
+    type: "DELETE_TODO",
+    payload,
+  };
+};
+
+var CompleteAllAction = (payload) => {
+  return {
+    type: payload,
+  };
+};
+
+// Change-Tab Actions
+
+var AllTodoAction = (payload) => {
+  return {
+    type: "CHANGE_TAB",
+    payload,
+  };
+};
+
+var ActiveTodoAction = (payload) => {
+  return {
+    type: "CHANGE_TAB",
+    payload,
+  };
+};
+
+var CompletedTodoAction = (payload) => {
+  return {
+    type: "CHANGE_TAB",
+    payload,
+  };
+};
+
+var UpdateTodoAction = (text, id) => {
+  return {
+    type: "UPDATE_TODO",
+    text,
+    id,
+  };
+};
+
+// Redux Store
+
+var rootReducer = Redux.combineReducers({
+  allTodos: allTodoReducer,
+  activeTab: activeTabReducer,
+});
+
+let store = Redux.createStore(rootReducer);
+store.subscribe(() => createUI(store.getState().allTodos));
+
+// Filter Todo list on the basis of active tab
+
+function getTodos(active, todos) {
+  switch (active) {
+    case "ALL_TODO":
+      return todos;
+
+    case "ALL_ACTIVE_TODO":
       return todos.filter((task) => !task.isDone);
 
-    case "ALL_TASK":
-      return todos;
-
-    case "UPDATE_TASK":
-      var index = todos.findIndex((task) => task.id === action.id);
-      todos[index].task = action.task;
-      return todos;
-
-    case "CLEAR_COMPLETED": 
-      todos = todos.filter(task => !task.isDone);
-      return todos;
+    case "ALL_COMPLETED_TODO":
+      return todos.filter((task) => task.isDone);
   }
-}
-
-function takeInput(event) {
-  let id = event.target.parentNode.dataset.id;
-  console.log({ id });
-  let p = event.target;
-  let parent = event.target.parentNode;
-  let inputEdit = document.createElement("input");
-
-  var delBtn = document.querySelector(".delete");
-  var tick = document.querySelector(".tick_wrapper");
-
-  delBtn.style.visibility = "hidden";
-  tick.style.visibility = "hidden";
-
-  inputEdit.classList.add("todo_input");
-  inputEdit.classList.add("edit");
-  parent.replaceChild(inputEdit, p);
-  inputEdit.innerText = event.target.innerText;
-
-  inputEdit.value = event.target.innerText;
-
-  inputEdit.addEventListener("keyup", (event) => editedValue(event, id));
-}
-
-function editedValue(event, todoId) {
-  console.log({ todoId });
-
-  if (event.keyCode === 13 && event.target.value.trim()) {
-    var delBtn = document.querySelector(".delete");
-    var tick = document.querySelector(".tick_wrapper");
-
-    delBtn.style.visibility = "visible";
-    tick.style.visibility = "visible";
-
-    return store.dispatch({
-      type: "UPDATE_TASK",
-      task: event.target.value,
-      id: todoId,
-    });
-  }
-}
-
-function markCompleted(event, id) {
-  return store.dispatch({
-    type: "COMPLETED",
-    id,
-  });
-}
-
-function deleteTask(event, id) {
-  return store.dispatch({
-    type: "DELETE",
-    id,
-  });
 }
 
 function createUI(todos = []) {
   var ul = document.querySelector(".todo_list");
   ul.innerHTML = "";
-  var todos = store.getState() || [];
+  var activeTab = store.getState().activeTab;
   console.log(todos);
+  var itemLeft = todos.filter((task) => !task.isDone).length;
+  console.log(itemLeft, "left");
+
+  // Filter Todos array before creating ui
+  var todos = getTodos(activeTab, todos);
+
   var downArrow = document.querySelector(".down_arrow");
   var footer = document.querySelector(".footer");
+
   if (todos.length) {
     downArrow.style.visibility = "visible";
     footer.style.visibility = "visible";
+  } else {
+    if (activeTab == "ALL_TODO") {
+      downArrow.style.visibility = "hidden";
+      footer.style.visibility = "hidden";
+    }
   }
+
   var noOfCompletedTask = todos.filter((task) => task.isDone).length;
   var clearCompletedBtn = document.querySelector(".clear_completed");
-  if(noOfCompletedTask) {
-      clearCompletedBtn.style.visibility = "visible";
+
+  if (noOfCompletedTask) {
+    clearCompletedBtn.style.visibility = "visible";
   } else {
     clearCompletedBtn.style.visibility = "hidden";
   }
 
-  
   todos.forEach((data) => {
     let li = document.createElement("li");
     li.classList.add("flex");
@@ -177,7 +231,7 @@ function createUI(todos = []) {
     label.appendChild(tickWrapper);
 
     let todoText = document.createElement("p");
-    todoText.innerText = data.task;
+    todoText.innerText = data.text;
     todoText.classList.add("todo_show");
 
     let delBtn = document.createElement("span");
@@ -198,51 +252,40 @@ function createUI(todos = []) {
 
     // Event Listeners
     clearCompletedBtn.addEventListener("click", () => {
-        return store.dispatch({
-            type: "CLEAR_COMPLETED"
-        })
-    })
+      return store.dispatch(ClearCompletedAction("CLEAR_COMPLETED"));
+    });
     todoText.addEventListener("dblclick", (event) => takeInput(event, data.id));
     li.addEventListener("mouseover", () => (delBtn.style.zIndex = 1));
     li.addEventListener("mouseout", () => (delBtn.style.zIndex = -1));
 
     delBtn.addEventListener("click", (event) => {
-      deleteTask(event, data.id);
+      deleteTodo(event, data.id);
     });
 
     checkTodo.addEventListener("click", (event) =>
       markCompleted(event, data.id)
     );
 
-    var itemLeft = todos.filter((task) => !task.isDone).length;
-
-    document.querySelector(".item_left").innerHTML =
-      itemLeft <= 1 ? `${itemLeft} item left` : `${itemLeft} items left`;
     ul.append(li);
   });
+  document.querySelector(".item_left").innerHTML =
+    itemLeft <= 1 ? `${itemLeft} item left` : `${itemLeft} items left`;
 }
 
-let store = Redux.createStore(todoReducer);
-store.subscribe(createUI);
-
-todos = store.getState() || [];
-
-createUI(todos);
-
 downArrowBtn.addEventListener("click", () => {
-  console.log("down arrow");
-  return store.dispatch({
-    type: "COMPLETE_ALL",
-  });
+  return store.dispatch(CompleteAllAction("COMPLETE_ALL"));
 });
+
+// Footer Buttons
 
 allBtn.addEventListener("click", (event) => {
   var prevSelectedBtn = document.querySelector(".selected");
   if (prevSelectedBtn) {
     prevSelectedBtn.classList.remove("selected");
   }
-
   event.target.classList.add("selected");
+
+  store.dispatch(AllTodoAction("ALL_TODO"));
 });
 
 activeBtn.addEventListener("click", (event) => {
@@ -250,8 +293,9 @@ activeBtn.addEventListener("click", (event) => {
   if (prevSelectedBtn) {
     prevSelectedBtn.classList.remove("selected");
   }
-
   event.target.classList.add("selected");
+
+  store.dispatch(AllTodoAction("ALL_ACTIVE_TODO"));
 });
 
 completedBtn.addEventListener("click", (event) => {
@@ -259,16 +303,64 @@ completedBtn.addEventListener("click", (event) => {
   if (prevSelectedBtn) {
     prevSelectedBtn.classList.remove("selected");
   }
-
   event.target.classList.add("selected");
+
+  store.dispatch(CompletedTodoAction("ALL_COMPLETED_TODO"));
 });
+
+// Event handler functions
+
+// Double Click handler(start)
+
+function takeInput(event) {
+  let id = event.target.parentNode.dataset.id;
+
+  let p = event.target;
+  let parent = event.target.parentNode;
+  let inputEdit = document.createElement("input");
+
+  var delBtn = document.querySelector(".delete");
+  var tick = document.querySelector(".tick_wrapper");
+
+  delBtn.style.visibility = "hidden";
+  tick.style.visibility = "hidden";
+
+  inputEdit.classList.add("todo_input");
+  inputEdit.classList.add("edit");
+  parent.replaceChild(inputEdit, p);
+  inputEdit.innerText = event.target.innerText;
+
+  inputEdit.value = event.target.innerText;
+
+  inputEdit.addEventListener("keyup", (event) => updateEditedValue(event, id));
+}
+
+function updateEditedValue(event, todoId) {
+  if (event.keyCode === 13 && event.target.value.trim()) {
+    var delBtn = document.querySelector(".delete");
+    var tick = document.querySelector(".tick_wrapper");
+
+    delBtn.style.visibility = "visible";
+    tick.style.visibility = "visible";
+
+    return store.dispatch(UpdateTodoAction(event.target.value, todoId));
+  }
+} // Double Click handler(end)
 
 function todoInput(event) {
   if (event.keyCode === 13 && event.target.value.trim()) {
-    var task = event.target.value;
-    store.dispatch({ type: "ADD", task });
+    var text = event.target.value;
+    store.dispatch(TodoInputAction(text));
     event.target.value = "";
   }
+}
+
+function markCompleted(event, id) {
+  return store.dispatch(ToggleTodoAction(id));
+}
+
+function deleteTodo(event, id) {
+  return store.dispatch(DeleteTodoAction(id));
 }
 
 input.addEventListener("keyup", todoInput);
