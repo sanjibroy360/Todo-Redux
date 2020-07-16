@@ -156,6 +156,61 @@ var rootReducer = Redux.combineReducers({
 let store = Redux.createStore(rootReducer);
 store.subscribe(() => createUI(store.getState().allTodos));
 
+// Event handler functions
+
+// Double Click handler(start)
+
+function takeInput(event) {
+  let id = event.target.parentNode.dataset.id;
+
+  let p = event.target;
+  let parent = event.target.parentNode;
+  let inputEdit = document.createElement("input");
+
+  var delBtn = document.querySelector(".delete");
+  var tick = document.querySelector(".tick_wrapper");
+
+  delBtn.style.visibility = "hidden";
+  tick.style.visibility = "hidden";
+
+  inputEdit.classList.add("todo_input");
+  inputEdit.classList.add("edit");
+  parent.replaceChild(inputEdit, p);
+  inputEdit.innerText = event.target.innerText;
+
+  inputEdit.value = event.target.innerText;
+
+  inputEdit.addEventListener("keyup", (event) => updateEditedValue(event, id));
+}
+
+function updateEditedValue(event, todoId) {
+  if (event.keyCode === 13 && event.target.value.trim()) {
+    var delBtn = document.querySelector(".delete");
+    var tick = document.querySelector(".tick_wrapper");
+
+    delBtn.style.visibility = "visible";
+    tick.style.visibility = "visible";
+
+    return store.dispatch(UpdateTodoAction(event.target.value, todoId));
+  }
+} // Double Click handler(end)
+
+function todoInput(event) {
+  if (event.keyCode === 13 && event.target.value.trim()) {
+    var text = event.target.value;
+    store.dispatch(TodoInputAction(text));
+    event.target.value = "";
+  }
+}
+
+function markCompleted(event, id) {
+  return store.dispatch(ToggleTodoAction(id));
+}
+
+function deleteTodo(event, id) {
+  return store.dispatch(DeleteTodoAction(id));
+}
+
 // Filter Todo list on the basis of active tab
 
 function getTodos(active, todos) {
@@ -307,60 +362,5 @@ completedBtn.addEventListener("click", (event) => {
 
   store.dispatch(CompletedTodoAction("ALL_COMPLETED_TODO"));
 });
-
-// Event handler functions
-
-// Double Click handler(start)
-
-function takeInput(event) {
-  let id = event.target.parentNode.dataset.id;
-
-  let p = event.target;
-  let parent = event.target.parentNode;
-  let inputEdit = document.createElement("input");
-
-  var delBtn = document.querySelector(".delete");
-  var tick = document.querySelector(".tick_wrapper");
-
-  delBtn.style.visibility = "hidden";
-  tick.style.visibility = "hidden";
-
-  inputEdit.classList.add("todo_input");
-  inputEdit.classList.add("edit");
-  parent.replaceChild(inputEdit, p);
-  inputEdit.innerText = event.target.innerText;
-
-  inputEdit.value = event.target.innerText;
-
-  inputEdit.addEventListener("keyup", (event) => updateEditedValue(event, id));
-}
-
-function updateEditedValue(event, todoId) {
-  if (event.keyCode === 13 && event.target.value.trim()) {
-    var delBtn = document.querySelector(".delete");
-    var tick = document.querySelector(".tick_wrapper");
-
-    delBtn.style.visibility = "visible";
-    tick.style.visibility = "visible";
-
-    return store.dispatch(UpdateTodoAction(event.target.value, todoId));
-  }
-} // Double Click handler(end)
-
-function todoInput(event) {
-  if (event.keyCode === 13 && event.target.value.trim()) {
-    var text = event.target.value;
-    store.dispatch(TodoInputAction(text));
-    event.target.value = "";
-  }
-}
-
-function markCompleted(event, id) {
-  return store.dispatch(ToggleTodoAction(id));
-}
-
-function deleteTodo(event, id) {
-  return store.dispatch(DeleteTodoAction(id));
-}
 
 input.addEventListener("keyup", todoInput);
