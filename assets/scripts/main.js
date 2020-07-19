@@ -57,9 +57,12 @@ function allTodoReducer(state = initialState.allTodos, action) {
       return state.filter((task) => task.id !== action.payload);
 
     case "UPDATE_TODO":
-      var index = state.findIndex((task) => task.id === action.id);
-      state[index].task = action.task;
-      return state;
+      return state.map((task) => {
+        if (task.id === action.id) {
+          task.text = action.text;
+        }
+        return task;
+      });
 
     case "CLEAR_COMPLETED":
       return state.filter((task) => !task.isDone);
@@ -230,9 +233,8 @@ function createUI(todos = []) {
   var ul = document.querySelector(".todo_list");
   ul.innerHTML = "";
   var activeTab = store.getState().activeTab;
-  console.log(todos);
+
   var itemLeft = todos.filter((task) => !task.isDone).length;
-  console.log(itemLeft, "left");
 
   // Filter Todos array before creating ui
   var todos = getTodos(activeTab, todos);
